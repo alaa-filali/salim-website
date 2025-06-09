@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مختبر عزل الـ DNA التفاعلي</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root {
+--primary: #4f46e5;
+--secondary: #9333ea;
+--background: #f8fafc;
+--foreground: #1e293b;
+--border: #cbd5e1;
+--radius: 0.75rem;
+--shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+--step1-color: #3b82f6;
+--step2-color: #10b981;
+--step3-color: #f59e0b;
+--step4-color: #8b5cf6;
+}
+*{
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Tajawal', sans-serif;
+}
+body{
+background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+color: var(--foreground);
+min-height: 100vh;
+width: 100%;
+margin: 0;
+}
+.container {
+width: 100%;
+max-width: none;
+padding: 1rem;
+height: 100vh;
+display: flex;
+flex-direction: column;
+}
+header {
+display: flex;
+flex-wrap: wrap;
+justify-content: space-between;
+align-items: center;
+padding: 1rem 0;
+margin-bottom: 2rem;
+border-bottom: 2px solid var(--border);
+}
+.title {
+background: linear-gradient(45deg, var(--primary), var(--secondary));
+-webkit-background-clip: text;
+background-clip: text;
+color: transparent;
+font-size: 2rem;
+font-weight: 800;
+text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+.main-grid {
+display: grid;
+grid-template-columns: 2fr 1fr;
+gap: 1rem;
+flex: 1;
+overflow: auto;
+}
+.lab-section {
+background: rgba(255, 255, 255, 0.95);
+backdrop-filter: blur(10px);
+border-radius: var(--radius);
+padding: 1.5rem;
+box-shadow: var(--shadow);
+transition: transform 0.3s ease;
+}
+.lab-section:hover {
+transform: translateY(-5px);
+}
+.tools-grid {
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+gap: 1rem;
+margin-bottom: 1.5rem;
+}
+.tool-card {
+position: relative;
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 1rem;
+border-radius: var(--radius);
+background: white;
+cursor: grab;
+transition: all 0.3s ease;
+border: 2px solid transparent;
+}
+.tool-card:hover {
+transform: scale(1.02);
+box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+border-color: var(--primary);
+}
+.test-tube {
+position: relative;
+height: 300px;
+width: 150px;
+margin: 1.5rem auto;
+background: linear-gradient(to right,
+rgba(255, 255, 255, 0.1),
+rgba(255, 255, 255, 0.3),
+rgba(255, 255, 255, 0.1));
+border-radius: 0 0 20px 20px;
+border: 3px solid var(--border);
+overflow: hidden;
+}
+.liquid {
+position: absolute;
+bottom: 0;
+width: 100%;
+transition: height 1s ease, background 1s ease;
+}
+.controls {
+background: rgba(241, 245, 249, 0.8);
+padding: 1rem;
+border-radius: var(--radius);
+border: 2px solid var(--border);
+}
+.protocol-section {
+display: flex;
+flex-direction: column;
+gap: 1rem;
+}
+.step-card {
+background: white;
+padding: 1rem;
+border-radius: var(--radius);
+border-left: 4px solid var(--border);
+box-shadow: var(--shadow);
+transition: all 0.3s ease;
+}
+.step-card.active-step-1 { border-left-color: var(--step1-color); background: #eff6ff; }
+.step-card.active-step-2 { border-left-color: var(--step2-color); background: #ecfdf5; }
+.step-card.active-step-3 { border-left-color: var(--step3-color); background: #fefce8; }
+.step-card.active-step-4 { border-left-color: var(--step4-color); background: #f5f3ff; }
+.step-number {
+width: 30px;
+height: 30px;
+background: linear-gradient(45deg, var(--primary), var(--secondary));
+color: white;
+display: flex;
+align-items: center;
+justify-content: center;
+border-radius: 50%;
+font-weight: 700;
+margin-left: 0.5rem;
+}
+.btn {
+padding: 0.5rem 1rem;
+border: none;
+border-radius: var(--radius);
+font-weight: 600;
+transition: all 0.3s ease;
+display: inline-flex;
+align-items: center;
+gap: 0.5rem;
+}
+.btn-primary {
+background: linear-gradient(45deg, var(--primary), var(--secondary));
+color: white;
+box-shadow: var(--shadow);
+}
+.btn-primary:hover {
+transform: translateY(-2px);
+box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+}
+.btn-danger {
+background: linear-gradient(45deg, #ef4444, #f87171);
+color: white;
+box-shadow: var(--shadow);
+}
+.btn-danger:hover {
+transform: translateY(-2px);
+box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+}
+.btn-sample {
+background: linear-gradient(45deg, var(--step1-color), #60a5fa);
+color: white;
+}
+.btn-sample:hover {
+transform: translateY(-2px);
+box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+}
+.btn-back {
+background: linear-gradient(45deg, #6b7280, #9ca3af);
+color: white;
+}
+.btn-back:hover {
+transform: translateY(-2px);
+box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+}
+.tooltip {
+position: absolute;
+top: -50px;
+background: rgba(0, 0, 0, 0.9);
+color: white;
+padding: 0.75rem 1rem;
+border-radius: 8px;
+font-size: 0.9rem;
+width: 200px;
+text-align: center;
+opacity: 0;
+transition: all 0.3s ease;
+pointer-events: none;
+}
+.tooltip:after {
+content: '';
+position: absolute;
+bottom: -10px;
+left: 50%;
+transform: translateX(-50%);
+border-width: 10px 10px 0;
+border-style: solid;
+border-color: rgba(0, 0, 0, 0.9) transparent transparent;
+}
+.tool-card:hover .tooltip {
+opacity: 1;
+top: -60px;
+}
+.notification {
+position: fixed;
+top: 20px;
+right: 20px;
+background: #10b981;
+color: white;
+padding: 1rem;
+border-radius: var(--radius);
+box-shadow: var(--shadow);
+opacity: 0;
+transition: opacity 0.3s ease;
+z-index: 1001;
+}
+.notification.active {
+opacity: 1;
+}
+.modal-overlay {
+position: fixed;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background: rgba(0, 0, 0, 0.5);
+display: flex;
+justify-content: center;
+align-items: center;
+z-index: 1000;
+opacity: 0;
+pointer-events: none;
+transition: opacity 0.3s ease;
+}
+.modal-overlay.active {
+opacity: 1;
+pointer-events: auto;
+}
+.modal-content {
+background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+border-radius: var(--radius);
+box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+max-width: 500px;
+width: 90%;
+padding: 2rem;
+max-height: 90vh;
+overflow-y: auto;
+transform: scale(0.7);
+transition: transform 0.3s ease;
+}
+.modal-overlay.active .modal-content {
+transform: scale(1);
+}
+.modal-content h2 {
+background: linear-gradient(45deg, var(--primary), var(--secondary));
+-webkit-background-clip: text;
+background-clip: text;
+color: transparent;
+text-align: center;
+margin-bottom: 1.5rem;
+}
+.score-card {
+background: rgba(255, 255, 255, 0.9);
+backdrop-filter: blur(10px);
+padding: 1rem;
+border-radius:(--radius);
+border: 1px solid var(--border);
+}
+.feedback-card {
+background: rgba(255, 229, 204, 0.5);
+backdrop-filter: blur(10px);
+padding: 1rem;
+border-radius: var(--radius);
+border: 1px solid #fed7aa;
+}
+@keyframes bubble {
+0%, 100% { transform: scale(1); }
+50% { transform: scale(1.02); }
+}
+@keyframes glow {
+0% { box-shadow: 0 0 10px rgba(79, 70, 229, 0.3); }
+50% { box-shadow: 0 0 20px rgba(79, 70, 229, 0.5); }
+100% { box-shadow: 0 0 10px rgba(79, 70, 229, 0.3); }
+}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1 class="title">مختبر عزل الـ DNA التفاعلي</h1>
+<a href="/static/1.pdf" download class="btn btn-primary" style="text-decoration: none;">
+  <i class="fas fa-download"></i> تحميل البروتوكول
+</a>
+</header>
+<main class="main-grid">
+<section class="lab-section">
+<h2 class="text-xl font-bold mb-4">المختبر التفاعلي</h2>
+<div class="tools-grid">
+<div class="tool-card" draggable="true">
+<i class="fas fa-tint text-2xl text-blue-500 mb-2"></i>
+<span class="font-medium">ماء مقطر</span>
+<span class="text-sm text-gray-500">10 مل</span>
+<div class="tooltip">
+ماء نقي خالٍ من الشوائب والأملاح
+<div class="mt-1 text-xs text-blue-200">اسحب إلى الأنبوب</div>
+</div>
+</div>
+<div class="tool-card" draggable="true">
+<i class="fas fa-soap text-2xl text-green-500 mb-2"></i>
+<span class="font-medium">محلول الصابون</span>
+<span class="text-sm text-gray-500">10 مل</span>
+<div class="tooltip">
+محلول منظف لتحطيم الأغشية الخلوية
+</div>
+</div>
+<div class="tool-card" draggable="true">
+<i class="fas fa-cube text-2xl text-gray-500 mb-2"></i>
+<span class="font-medium">ملح الطعام</span>
+<span class="text-sm text-gray-500">1/4 ملعقة</span>
+<div class="tooltip">
+كلوريد الصوديوم لترسيب البروتينات
+</div>
+</div>
+<div class="tool-card" draggable="true">
+<i class="fas fa-snowflake text-2xl text-purple-500 mb-2"></i>
+<span class="font-medium">إيثانول بارد</span>
+<span class="text-sm text-gray-500">4°C</span>
+<div class="tooltip">
+كحول إيثيلي مبرد لترسيب DNA
+</div>
+</div>
+</div>
+<div class="test-tube">
+<div class="liquid" id="liquid"></div>
+</div>
+<div class="controls">
+<div class="text-center mb-4">
+<i class="fas fa-thermometer-half text-red-500 mr-2"></i>
+<span class="font-medium" id="temp-display">درجة الحرارة: 25°C</span>
+</div>
+<div class="grid grid-cols-3 gap-2">
+<button class="btn btn-sample" id="sample-btn">
+<i class="fas fa-swab"></i>
+تحضير العينة
+</button>
+<button class="btn" id="heat-btn" disabled>
+<i class="fas fa-fire"></i>
+بدء التسخين
+</button>
+<button class="btn" id="stop-heat-btn" disabled>
+<i class="fas fa-stop"></i>
+إنهاء التسخين
+</button>
+<button class="btn" id="mix-btn" disabled>
+<i class="fas fa-blender"></i>
+بدء الخلط
+</button>
+<button class="btn" id="stop-mix-btn" disabled>
+<i class="fas fa-stop"></i>
+إنهاء الخلط
+</button>
+<button class="btn btn-primary" id="extract-btn" disabled>
+<i class="fas fa-dna"></i>
+استخراج
+</button>
+</div>
+</div>
+</section>
+<aside class="protocol-section">
+<h2 class="text-xl font-bold mb-2">خطوات البروتوكول</h2>
+<div class="step-card active-step-1">
+<div class="flex items-center gap-3 mb-3">
+<div class="step-number">1</div>
+<h3 class="text-lg font-semibold">جمع العينة</h3>
+</div>
+<p class="text-gray-600">اضغط على زر تحضير العينة لجمع خلايا باطن الخد</p>
+</div>
+<div class="step-card">
+<div class="flex items-center gap-3 mb-3">
+<div class="step-number">2</div>
+<h3 class="text-lg font-semibold">تحلل الخلايا</h3>
+</div>
+<p class="text-gray-600">أضف الماء والصابون لتكسير الأغشية</p>
+</div>
+<div class="step-card">
+<div class="flex items-center gap-3 mb-3">
+<div class="step-number">3</div>
+<h3 class="text-lg font-semibold">ترسيب البروتينات</h3>
+</div>
+<p class="text-gray-600">استخدم الملح ودرجة حرارة 37°C لترسيب الشوائب</p>
+</div>
+<div class="step-card">
+<div class="flex items-center gap-3 mb-3">
+<div class="step-number">4</div>
+<h3 class="text-lg font-semibold">عزل DNA</h3>
+</div>
+<p class="text-gray-600">أضف الإيثانول البارد لترسيب DNA</p>
+</div>
+<div class="flex gap-2 flex-wrap">
+<button class="btn btn-back mt-4" id="prev-step-btn" disabled>
+<i class="fas fa-arrow-right"></i>
+الخطوة السابقة
+</button>
+<button class="btn btn-primary mt-4" id="next-step-btn" disabled>
+الخطوة التالية
+<i class="fas fa-arrow-left"></i>
+</button>
+<button class="btn btn-danger mt-4" id="end-experiment-btn">
+إنهاء التجربة
+<i class="fas fa-stop"></i>
+</button>
+</div>
+</aside>
+</main>
+<div class="notification" id="point-notification"></div>
+<div class="modal-overlay" id="score-modal">
+<div class="modal-content">
+<h2 class="text-2xl font-bold">تقرير نتائج التجربة</h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+<div class="score-card">
+<div class="flex items-center gap-3 mb-2">
+<i class="fas fa-star text-2xl text-red-500"></i>
+<h3 class="text-lg font-semibold text-slate-700">النتيجة النهائية</h3>
+</div>
+<p class="text-3xl font-bold text-slate-800" id="final-score">0/20</p>
+<p class="font-semibold text-lg" id="score-comment"></p>
+</div>
+<div class="score-card">
+<div class="flex items-center gap-3 mb-2">
+<i class="fas fa-clock text-2xl text-sky-500"></i>
+<h3 class="text-lg font-semibold text-slate-700">الوقت المستغرق</h3>
+</div>
+<p class="text-xl text-slate-800 font-medium" id="time-taken">0 دقيقة و 0 ثانية</p>
+</div>
+</div>
+<div class="score-card mb-6">
+<div class="flex items-center gap-3 mb-4">
+<i class="fas fa-tasks text-2xl text-teal-500"></i>
+<h3 class="text-lg font-semibold text-slate-700">ملخص الأداء</h3>
+</div>
+<p class="text-sm text-slate-500" id="performance-summary">لم يتم إكمال أي خطوات بشكل صحيح بعد.</p>
+</div>
+<div class="feedback-card mb-6">
+<div class="flex items-center gap-3 mb-3">
+<i class="fas fa-lightbulb text-xl text-amber-500"></i>
+<h3 class="text-lg font-semibold text-amber-700">نصائح للتحسين</h3>
+</div>
+<ul class="space-y-2 text-sm text-amber-600" id="improvement-tips">
+<li class="flex items-start gap-2"><span class="font-semibold mt-0.5">•</span>اتبع الخطوات بدقة أكبر مع الانتباه لتسلسل الإجراءات.</li>
+<li class="flex items-start gap-2"><span class="font-semibold mt-0.5">•</span>اقرأ التعليمات بعناية قبل تنفيذ كل خطوة.</li>
+<li class="flex items-start gap-2"><span class="font-semibold mt-0.5">•</span>تأكد من إضافة المكونات في الخطوة المناسبة للحصول على النقاط.</li>
+</ul>
+</div>
+<div class="flex justify-center">
+<button class="btn btn-primary" id="close-modal">إغلاق التقرير</button>
+</div>
+</div>
+</div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // DOM Elements
+  const liquid = document.getElementById('liquid');
+  const toolCards = document.querySelectorAll('.tool-card');
+  const nextStepButton = document.getElementById('next-step-btn');
+  const prevStepButton = document.getElementById('prev-step-btn');
+  const endExperimentButton = document.getElementById('end-experiment-btn');
+  const sampleButton = document.getElementById('sample-btn');
+  const heatButton = document.getElementById('heat-btn');
+  const stopHeatButton = document.getElementById('stop-heat-btn');
+  const mixButton = document.getElementById('mix-btn');
+  const stopMixButton = document.getElementById('stop-mix-btn');
+  const extractButton = document.getElementById('extract-btn');
+  const testTube = document.querySelector('.test-tube');
+  const scoreModal = document.getElementById('score-modal');
+  const closeModalButton = document.getElementById('close-modal');
+  const pointNotification = document.getElementById('point-notification');
+  const tempDisplay = document.getElementById('temp-display');
+
+  // Validation
+  if (!liquid) console.error('Element with id "liquid" not found');
+  if (!nextStepButton) console.error('Element with id "next-step-btn" not found');
+  if (!prevStepButton) console.error('Element with id "prev-step-btn" not found');
+  if (!endExperimentButton) console.error('Element with id "end-experiment-btn" not found');
+  if (!sampleButton) console.error('Element with id "sample-btn" not found');
+  if (!heatButton) console.error('Element with id "heat-btn" not found');
+  if (!stopHeatButton) console.error('Element with id "stop-heat-btn" not found');
+  if (!mixButton) console.error('Element with id "mix-btn" not found');
+  if (!stopMixButton) console.error('Element with id "stop-mix-btn" not found');
+  if (!extractButton) console.error('Element with id "extract-btn" not found');
+  if (!testTube) console.error('Element with class "test-tube" not found');
+  if (!scoreModal) console.error('Element with id "score-modal" not found');
+  if (!closeModalButton) console.error('Element with id "close-modal" not found');
+  if (!pointNotification) console.error('Element with id "point-notification" not found');
+  if (!tempDisplay) console.error('Element with id "temp-display" not found');
+
+  // State Variables
+  let currentStep = 1;
+  let addedTools = [];
+  let allAddedTools = [];
+  let correctTools = [];
+  let controlActions = { sample: false, heat: false, mix: false, extract: false };
+  let startTime = Date.now();
+  let isHeating = false;
+  let isMixing = false;
+  let temperature = 25;
+  let stepHistory = [];
+
+  // Step Requirements
+  const stepRequirements = {
+    1: ['عينة خلايا'],
+    2: ['ماء مقطر', 'محلول الصابون'],
+    3: ['ملح الطعام'],
+    4: ['إيثانول بارد'],
+  };
+
+  // Timer Function
+  function formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    seconds = seconds % 60;
+    return `${minutes} دقيقة و ${seconds} ثانية`;
+  }
+
+  // Show Notification
+  function showNotification(message) {
+    pointNotification.textContent = message;
+    pointNotification.classList.add('active');
+    setTimeout(() => {
+      pointNotification.classList.remove('active');
+    }, 3000);
+  }
+
+  // Update Tool Cards
+  function updateToolCards() {
+    toolCards.forEach(card => {
+      card.classList.remove('disabled');
+      card.setAttribute('draggable', true);
+      card.addEventListener('dragstart', handleDragStart);
+    });
+  }
+
+  // Drag and Drop Handlers
+  function handleDragStart(e) {
+    e.dataTransfer.setData('text/plain', e.target.querySelector('span').textContent);
+  }
+
+  if (testTube) {
+    testTube.addEventListener('dragover', e => {
+      e.preventDefault();
+      e.target.style.animation = 'glow 1.5s infinite';
+    });
+
+    testTube.addEventListener('drop', e => {
+      e.preventDefault();
+      e.target.style.animation = '';
+      const tool = e.dataTransfer.getData('text/plain');
+      if (!addedTools.includes(tool)) {
+        addedTools.push(tool);
+        allAddedTools.push(tool);
+        if (stepRequirements[currentStep].includes(tool) && !correctTools.includes(tool)) {
+          correctTools.push(tool);
+          showNotification(`تم إضافة ${tool} بنجاح! (+1 نقطة)`);
+        } else {
+          showNotification(`تم إضافة ${tool} لكن لا نقاط لهذه الخطوة`);
+        }
+        updateLiquid();
+        checkStepCompletion();
+      }
+    });
+  }
+
+  // Update Liquid Appearance
+  function updateLiquid() {
+    if (!liquid) return;
+    let height = 0;
+    let color = '';
+    allAddedTools.forEach((tool, index) => {
+      switch (tool) {
+        case 'عينة خلايا':
+          height += 10;
+          color = index === allAddedTools.length - 1 ? 'linear-gradient(to top, #bfdbfe, #dbeafe)' : color;
+          break;
+        case 'ماء مقطر':
+          height += 20;
+          color = index === allAddedTools.length - 1 ? 'linear-gradient(to top, #93c5fd, #bfdbfe)' : color;
+          break;
+        case 'محلول الصابون':
+          height += 20;
+          color = index === allAddedTools.length - 1 ? 'linear-gradient(to top, #86efac, #bbf7d0)' : color;
+          break;
+        case 'ملح الطعام':
+          height += 20;
+          color = index === allAddedTools.length - 1 ? 'linear-gradient(to top, #e66465, #9198e5)' : color;
+          break;
+        case 'إيثانول بارد':
+          height += 20;
+          color = index === allAddedTools.length - 1 ? 'linear-gradient(to top, #e9d5ff, #f3e8ff)' : color;
+          break;
+      }
+    });
+    height = Math.min(height, 100);
+    liquid.style.height = `${height}%`;
+    liquid.style.background = color || 'linear-gradient(to top, #ffffff, #e0e0e0)';
+  }
+
+  // Check Step Completion
+  function checkStepCompletion() {
+    const requiredTools = stepRequirements[currentStep];
+    const allToolsAdded = requiredTools.every(tool => correctTools.includes(tool));
+    if (allToolsAdded && nextStepButton) {
+      if (currentStep === 3) {
+        heatButton.removeAttribute('disabled');
+        stopHeatButton.removeAttribute('disabled');
+        mixButton.removeAttribute('disabled');
+        stopMixButton.removeAttribute('disabled');
+      }
+      if (currentStep === 4) {
+        extractButton.removeAttribute('disabled');
+      }
+      nextStepButton.removeAttribute('disabled');
+    }
+  }
+
+  // Calculate Score
+  function calculateScore() {
+    let score = 0;
+    const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
+    
+    // Base score: 3 points per completed step
+    score += (currentStep - 1) * 3;
+    
+    // Correct tools: 1 point per correct tool
+    score += correctTools.length;
+    
+    // Control actions
+    if (controlActions.sample) score += 2;
+    if (controlActions.heat) score += 2;
+    if (controlActions.mix) score += 2;
+    if (controlActions.extract) score += 2;
+    
+    // Time bonus: Up to 3 points for completing in under 5 minutes
+    if (elapsedSeconds < 300) {
+      score += Math.floor((300 - elapsedSeconds) / 100);
+    }
+    
+    return Math.min(score, 20);
+  }
+
+  // Generate Performance Summary
+  function generatePerformanceSummary() {
+    const completedSteps = currentStep - 1;
+    const requiredTools = stepRequirements[currentStep];
+    const toolsComplete = requiredTools.every(tool => correctTools.includes(tool));
+    let summary = '';
+    
+    if (completedSteps === 0 && !toolsComplete) {
+      summary = 'لم يتم إكمال أي خطوات بشكل صحيح بعد.';
+    } else {
+      summary = `تم إكمال ${completedSteps} من 4 خطوات. `;
+      if (toolsComplete) {
+        summary += 'جميع الأدوات المطلوبة في الخطوة الحالية تمت إضافتها بنجاح.';
+      } else {
+        summary += 'الخطوة الحالية لم تكتمل بالكامل.';
+      }
+      if (controlActions.sample) summary += ' تم جمع العينة بنجاح.';
+      if (controlActions.heat) summary += ' تم التسخين إلى 37°C بشكل صحيح.';
+      if (controlActions.mix) summary += ' تم الخلط بشكل صحيح.';
+      if (controlActions.extract) summary += ' تم استخراج الـ DNA بنجاح.';
+    }
+    return summary;
+  }
+
+  // Generate Score Comment
+  function generateScoreComment(score) {
+    if (score >= 16) return { text: 'ممتاز!', color: 'text-green-600' };
+    if (score >= 12) return { text: 'جيد جدًا', color: 'text-blue-600' };
+    if (score >= 8) return { text: 'مقبول', color: 'text-yellow-600' };
+    return { text: 'يحتاج إلى تحسين', color: 'text-red-600' };
+  }
+
+  // Show Score Modal
+  function showScoreModal() {
+    const score = calculateScore();
+    const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
+    const scoreComment = generateScoreComment(score);
+    
+    document.getElementById('final-score').textContent = `${score}/20`;
+    document.getElementById('score-comment').textContent = scoreComment.text;
+    document.getElementById('score-comment').className = `font-semibold text-lg ${scoreComment.color}`;
+    document.getElementById('time-taken').textContent = formatTime(elapsedSeconds);
+    document.getElementById('performance-summary').textContent = generatePerformanceSummary();
+    
+    scoreModal.classList.add('active');
+  }
+
+  // End Experiment
+  if (endExperimentButton) {
+    endExperimentButton.addEventListener('click', () => {
+      showScoreModal();
+      disableInteractions();
+    });
+  }
+
+  // Disable Interactions
+  function disableInteractions() {
+    toolCards.forEach(card => {
+      card.classList.add('disabled');
+      card.setAttribute('draggable', false);
+      card.removeEventListener('dragstart', handleDragStart);
+    });
+    [sampleButton, heatButton, stopHeatButton, mixButton, stopMixButton, extractButton, nextStepButton, prevStepButton, endExperimentButton].forEach(btn => {
+      if (btn) btn.setAttribute('disabled', true);
+    });
+    if (testTube) {
+      testTube.removeEventListener('dragover', e => e.preventDefault());
+      testTube.removeEventListener('drop', e => {});
+    }
+  }
+
+  // Close Modal
+  if (closeModalButton) {
+    closeModalButton.addEventListener('click', () => {
+      scoreModal.classList.remove('active');
+    });
+  }
+
+  // Sample Preparation
+  if (sampleButton) {
+    sampleButton.addEventListener('click', () => {
+      if (currentStep === 1 && !controlActions.sample) {
+        controlActions.sample = true;
+        addedTools.push('عينة خلايا');
+        allAddedTools.push('عينة خلايا');
+        correctTools.push('عينة خلايا');
+        updateLiquid();
+        checkStepCompletion();
+        sampleButton.setAttribute('disabled', true);
+        showNotification('تم جمع العينة بنجاح! (+2 نقطة)');
+      }
+    });
+  }
+
+  // Heating Control
+  let heatInterval;
+  if (heatButton) {
+    heatButton.addEventListener('click', () => {
+      if (currentStep === 3 && !isHeating) {
+        isHeating = true;
+        heatButton.setAttribute('disabled', true);
+        stopHeatButton.removeAttribute('disabled');
+        heatInterval = setInterval(() => {
+          if (temperature < 37) {
+            temperature += 1;
+            tempDisplay.textContent = `درجة الحرارة: ${temperature}°C`;
+          }
+          if (temperature >= 37) {
+            showNotification('تم الوصول إلى درجة الحرارة المطلوبة 37°C! (+2 نقطة)');
+            controlActions.heat = true;
+          }
+        }, 1000);
+      }
+    });
+  }
+
+  if (stopHeatButton) {
+    stopHeatButton.addEventListener('click', () => {
+      if (currentStep === 3 && isHeating) {
+        isHeating = false;
+        clearInterval(heatInterval);
+        heatButton.removeAttribute('disabled');
+        stopHeatButton.setAttribute('disabled', true);
+        if (liquid) liquid.style.animation = '';
+      }
+    });
+  }
+
+  // Mixing Control
+  let mixInterval;
+  if (mixButton) {
+    mixButton.addEventListener('click', () => {
+      if (currentStep === 3 && !isMixing) {
+        isMixing = true;
+        mixButton.setAttribute('disabled', true);
+        stopMixButton.removeAttribute('disabled');
+        if (liquid) liquid.style.animation = 'bubble 0.5s infinite';
+        mixInterval = setTimeout(() => {
+          showNotification('تم الخلط بنجاح! (+2 نقطة)');
+          controlActions.mix = true;
+        }, 3000);
+      }
+    });
+  }
+
+  if (stopMixButton) {
+    stopMixButton.addEventListener('click', () => {
+      if (currentStep === 3 && isMixing) {
+        isMixing = false;
+        clearTimeout(mixInterval);
+        mixButton.removeAttribute('disabled');
+        stopMixButton.setAttribute('disabled', true);
+        if (liquid) liquid.style.animation = '';
+      }
+    });
+  }
+
+  // Extract DNA
+  if (extractButton) {
+    extractButton.addEventListener('click', () => {
+      if (currentStep === 4) {
+        if (liquid) {
+          liquid.style.background = 'linear-gradient(to top, #ffffff, #e0e0e0)';
+          liquid.style.height = '100%';
+          liquid.style.animation = '';
+        }
+        controlActions.extract = true;
+        showNotification('تم استخراج الـ DNA بنجاح! (+2 نقطة)');
+      }
+    });
+  }
+
+  // Next Step
+  if (nextStepButton) {
+    nextStepButton.addEventListener('click', () => {
+      const requiredTools = stepRequirements[currentStep];
+      const allToolsAdded = requiredTools.every(tool => correctTools.includes(tool));
+      if (allToolsAdded && currentStep < 4) {
+        stepHistory.push({ step: currentStep, addedTools: [...addedTools], correctTools: [...correctTools] });
+        currentStep++;
+        prevStepButton.removeAttribute('disabled');
+        updateStepUI();
+      } else if (allToolsAdded && currentStep === 4) {
+        showScoreModal();
+        disableInteractions();
+      } else {
+        showNotification('يرجى إكمال إضافة جميع الأدوات المطلوبة لهذه الخطوة!');
+      }
+    });
+  }
+
+  // Previous Step
+  if (prevStepButton) {
+    prevStepButton.addEventListener('click', () => {
+      if (currentStep > 1 && stepHistory.length > 0) {
+        const prevState = stepHistory.pop();
+        currentStep = prevState.step;
+        addedTools = prevState.addedTools;
+        correctTools = prevState.correctTools;
+        updateStepUI();
+        if (stepHistory.length === 0) {
+          prevStepButton.setAttribute('disabled', true);
+        }
+      }
+    });
+  }
+
+  // Update Step UI
+  function updateStepUI() {
+    if (allAddedTools.length > 0) {
+      updateLiquid();
+    } else if (liquid) {
+      liquid.style.height = '0%';
+      liquid.style.background = '';
+      liquid.style.animation = '';
+    }
+    document.querySelectorAll('.step-card').forEach((card, index) => {
+      card.classList.remove('active-step-1', 'active-step-2', 'active-step-3', 'active-step-4');
+      if (index + 1 === currentStep) {
+        card.classList.add(`active-step-${currentStep}`);
+      }
+    });
+    [heatButton, stopHeatButton, mixButton, stopMixButton, extractButton].forEach(btn => {
+      if (btn) btn.setAttribute('disabled', true);
+    });
+    if (currentStep === 1) {
+      if (!controlActions.sample) sampleButton.removeAttribute('disabled');
+    }
+    if (currentStep === 3) {
+      if (stepRequirements[currentStep].every(tool => correctTools.includes(tool))) {
+        heatButton.removeAttribute('disabled');
+        stopHeatButton.removeAttribute('disabled');
+        mixButton.removeAttribute('disabled');
+        stopMixButton.removeAttribute('disabled');
+      }
+    }
+    if (currentStep === 4) {
+      if (stepRequirements[currentStep].every(tool => correctTools.includes(tool))) {
+        extractButton.removeAttribute('disabled');
+      }
+    }
+    const requiredTools = stepRequirements[currentStep];
+    if (requiredTools.every(tool => correctTools.includes(tool))) {
+      nextStepButton.removeAttribute('disabled');
+    } else {
+      nextStepButton.setAttribute('disabled', true);
+    }
+    temperature = 25;
+    tempDisplay.textContent = `درجة الحرارة: ${temperature}°C`;
+    isHeating = false;
+    isMixing = false;
+    updateToolCards();
+  }
+
+  // Initialize
+  updateToolCards();
+});
+</script>
+</body>
+</html>

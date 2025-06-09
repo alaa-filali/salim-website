@@ -1,0 +1,27 @@
+{% include "header.html" %}
+<br><br>
+
+<div class="container mx-auto max-w-3xl py-10 px-4 text-right" dir="rtl">
+
+  <!-- عارض PDF -->
+  <div class="border rounded mb-6 overflow-hidden shadow mx-auto" style="height: 400px;">
+    <iframe src="{{ url_for('static', filename='safety.pdf') }}" class="w-full h-full" frameborder="0"></iframe>
+  </div>
+
+  <!-- نموذج الموافقة -->
+  <form action="{{ url_for('product1') }}" method="GET" class="mt-6">
+    <div class="flex items-center gap-3">
+      <input type="checkbox" id="agreeCheck" name="agree" required class="form-checkbox h-5 w-5 text-green-600">
+      <label for="agreeCheck" class="text-gray-800 dark:text-gray-300">
+        أوافق على تعليمات الصحة والسلامة في المختبرات
+      </label>
+    </div>
+
+    <button type="submit"
+      class="mt-6 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded">
+      الانتقال إلى التجارب
+    </button>
+  </form>
+</div>
+
+{% include "footer.html" %}

@@ -1,0 +1,140 @@
+{% include "header.html" %}
+
+<style>
+  body {
+    font-family: "Tajawal", sans-serif;
+    background-color: #f2f9fe;
+    margin: 0;
+    padding: 0;
+  }
+
+  .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+
+  .login-card {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .login-card h3 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: #004d80;
+  }
+
+  .alert {
+    background-color: #d2ecff;
+    border: 1px solid #a4d4f4;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    color: #004466;
+    font-size: 14px;
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 6px;
+    color: #333;
+    font-weight: bold;
+  }
+
+  input[type="text"],
+  input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #cbdcea;
+    font-size: 15px;
+    box-sizing: border-box;
+  }
+
+  input:focus {
+    outline: none;
+    border-color: #7dc1f9;
+    box-shadow: 0 0 5px #b3dfff;
+  }
+
+  button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4aa1e1;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  button:hover {
+    background-color: #357db3;
+  }
+  .btn-experiment {
+    display: inline-block;
+    background-color: #003c5c;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    margin-top: 15px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-experiment:hover {
+    background-color: #005178;
+  }
+</style>
+
+<br>
+<div class="login-container">
+  <div class="login-card">
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+          <div style="color: red;" class="alert">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="/register" dir="rtl"> 
+      <div class="form-group"> 
+        <label for="email">اسم المستخدم</label> 
+        <input type="text" id="username" name="username" required> 
+      </div> 
+
+      <div class="form-group"> 
+        <label for="email">الإيميل</label> 
+        <input type="text" id="email" name="email" required> 
+      </div> 
+    
+      <div class="form-group"> 
+        <label for="password">كلمة المرور</label> 
+        <input type="password" id="password" name="password" required> 
+      </div> 
+    
+      <button type="submit" class="btn-experiment">انشاء حساب</button> 
+    
+      <p style="text-align: center; margin-top: 15px;">
+       لديك حساب؟ 
+        <a href="/login" style="color: #007bff; text-decoration: none;">سجل الدخول</a>
+      </p>
+    </form>
+    
+  </div>
+</div>
+
+{% include "footer.html" %}

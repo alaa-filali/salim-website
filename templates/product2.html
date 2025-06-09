@@ -1,0 +1,90 @@
+{% include "header.html" %}
+
+<style>
+  body {
+    font-family: "Tajawal", sans-serif;
+    background-color: #f2f9fe;
+  }
+
+  section {
+    background-color: #f2f9fe;
+    padding: 60px 20px;
+    min-height: 100vh;
+  }
+
+  .content-box {
+    background-color: #e8f4fc; /* لون فاتح مائل للأزرق ليتناسق مع الخلفية */
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .content-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08);
+  }
+
+  .content-box img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    margin-bottom: 15px;
+  }
+
+  .content-box h2 {
+    color: #003c5c;
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin: 0 0 10px;
+  }
+
+  .btn-experiment {
+    display: inline-block;
+    background-color: #003c5c;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    margin-top: 15px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-experiment:hover {
+    background-color: #005178;
+  }
+
+  @media (min-width: 768px) {
+    section {
+      padding-top: 80px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 30px;
+    }
+  }
+</style>
+
+<section>
+  <dl class="grid" dir="rtl">
+    <!-- تجربة 1 -->
+    <div class="content-box">
+      <img src="{{ url_for('static', filename='index_files/DNA.avif') }}" alt="تجربة عزل DNA">
+      <h2>تجربة عزل  DNA</h2>
+      <a href="{{url_for('DNA_exp')}}" class="btn-experiment" >الانتقال إلى التجربة</a>
+    </div>
+
+    <!-- تجربة 2 -->
+    <div class="content-box">
+      <img src="{{ url_for('static', filename='index_files/6.avif') }}" alt="التجربة الثانية">
+      <h2>الفصل الكهربائي لهلام الأغاروز</h2>
+      <a href="{{url_for('DNA_exp2')}}" class="btn-experiment">الانتقال إلى التجربة</a>
+    </div>
+
+  </dl>
+</section>
+
+{% include "footer.html" %}

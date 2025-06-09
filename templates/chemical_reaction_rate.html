@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تأثير درجة الحرارة على معدل التفاعل الكيميائي</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #2563eb;
+  --secondary: #10b981;
+  --accent: #7c3aed;
+  --background: #f0f4f8;
+  --foreground: #1e293b;
+  --border: #d1d5db;
+  --radius: 10px;
+  --shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  --step1-color: #3b82f6;
+  --step2-color: #10b981;
+  --step3-color: #f59e0b;
+  --step4-color: #8b5cf6;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Cairo', sans-serif;
+}
+body {
+  background: linear-gradient(135deg, #e6f0fa, #f0f4f8);
+  color: var(--foreground);
+  height: 100vh;
+  width: 100%;
+  margin: 0;
+  background-image: url('https://www.transparenttextures.com/patterns/white-carbon.png');
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+}
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 2rem);
+  height: auto;
+}
+header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 1.5rem;
+  margin-bottom: 1rem;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.title {
+  background: linear-gradient(45deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-size: 2rem;
+  font-weight: 700;
+}
+.main-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 1rem;
+  flex: 1;
+  min-height: 0;
+}
+.lab-section {
+  background: rgba(255, 255, 255, 0.98);
+  border-radius: var(--radius);
+  padding: 1.2rem;
+  box-shadow: var(--shadow);
+  overflow-y: auto;
+}
+.lab-section:hover {
+  transform: translateY(-2px);
+}
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+}
+.equipment-section {
+  background: rgba(241, 245, 249, 0.9);
+  border-radius: var(--radius);
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.tool-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.8rem;
+  border-radius: var(--radius);
+  background: white;
+  cursor: grab;
+  transition: all 0.3s ease;
+  border: 2px solid var(--border);
+}
+.tool-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  border-color: var(--primary);
+}
+.test-tube {
+  position: relative;
+  height: 180px;
+  width: 80px;
+  margin: 1rem auto;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.4));
+  border: 3px solid #94a3b8;
+  border-radius: 10px 10px 0 0;
+  overflow: hidden;
+  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.1);
+}
+.tube-content {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  transition: height 1s ease, background 1s ease;
+}
+.controls {
+  background: rgba(241, 245, 249, 0.95);
+  padding: 1rem;
+  border-radius: var(--radius);
+  border: 2px solid var(--border);
+}
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  background: white;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.results-table th, .results-table td {
+  padding: 0.8rem;
+  text-align: center;
+  border: 1px solid var(--border);
+}
+.results-table th {
+  background: linear-gradient(45deg, var(--primary), var(--accent));
+  color: white;
+}
+.protocol-section {
+  background: rgba(255, 255, 255, 0.98);
+  border-radius: var(--radius);
+  padding: 1.2rem;
+  box-shadow: var(--shadow);
+  overflow-y: auto;
+}
+.step-card {
+  background: white;
+  padding: 1rem;
+  border-radius: var(--radius);
+  border-left: 4px solid var(--border);
+  box-shadow: var(--shadow);
+  transition: all 0.3s ease;
+  margin-bottom: 0.8rem;
+}
+.step-card.active-step-1 { border-left-color: var(--step1-color); background: #eff6ff; }
+.step-card.active-step-2 { border-left-color: var(--step2-color); background: #ecfdf5; }
+.step-card.active-step-3 { border-left-color: var(--step3-color); background: #fefce8; }
+.step-card.active-step-4 { border-left-color: var(--step4-color); background: #f5f3ff; }
+.step-number {
+  width: 28px;
+  height: 28px;
+  background: linear-gradient(45deg, var(--primary), var(--accent));
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-weight: 700;
+  margin-left: 0.5rem;
+}
+.btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+.btn:before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease, height 0.6s ease;
+}
+.btn:hover:before {
+  width: 300px;
+  height: 300px;
+}
+.btn-primary {
+  background: linear-gradient(45deg, var(--primary), var(--accent));
+  color: white;
+  animation: pulse 2s infinite;
+}
+.btn-danger {
+  background: linear-gradient(45deg, #ef4444, #f87171);
+  color: white;
+}
+.btn-sample {
+  background: linear-gradient(45deg, var(--step1-color), #60a5fa);
+  color: white;
+}
+.btn-back {
+  background: linear-gradient(45deg, #6b7280, #9ca3af);
+  color: white;
+}
+.btn-equipment {
+  background: linear-gradient(45deg, #4b5563, #6b7280);
+  color: white;
+}
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+.tooltip {
+  position: absolute;
+  top: -50px;
+  background: rgba(0, 0, 0, 0.85);
+  color: white;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  width: 200px;
+  text-align: center;
+  opacity: 0;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+.tooltip:after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 8px 8px 0;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.85) transparent transparent;
+}
+.tool-card:hover .tooltip {
+  opacity: 1;
+  top: -60px;
+}
+.notification {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  background: var(--secondary);
+  color: white;
+  padding: 0.8rem 1.2rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1001;
+}
+.notification.active {
+  opacity: 1;
+}
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+.modal-content {
+  background: white;
+  border-radius: var(--radius);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  max-width: 550px;
+  width: 90%;
+  padding: 1.5rem;
+  max-height: 85vh;
+  overflow-y: auto;
+  transform: scale(0.7);
+  transition: transform 0.3s ease;
+}
+.modal-overlay.active .modal-content {
+  transform: scale(1);
+}
+.modal-content h2 {
+  background: linear-gradient(45deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+.score-card {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 1rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+.feedback-card {
+  background: rgba(254, 243, 199, 0.5);
+  padding: 1rem;
+  border-radius: var(--radius);
+  border: 1px solid #fed7aa;
+}
+@keyframes bubble {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+@keyframes glow {
+  0% { box-shadow: 0 0 8px rgba(37, 99, 235, 0.3); }
+  50% { box-shadow: 0 0 16px rgba(37, 99, 235, 0.5); }
+  100% { box-shadow: 0 0 8px rgba(37, 99, 235, 0.3); }
+}
+@media (max-height: 600px) {
+  .lab-section, .protocol-section {
+    padding: 0.8rem;
+  }
+  .test-tube {
+    height: 150px;
+    width: 70px;
+  }
+  .tools-grid {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  }
+  .step-card {
+    padding: 0.8rem;
+    margin-bottom: 0.5rem;
+  }
+}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1 class="title">تأثير درجة الحرارة على معدل التفاعل الكيميائي</h1>
+<a href="/static/3.pdf" download class="btn btn-primary" style="text-decoration: none;">
+  <i class="fas fa-download"></i> تحميل البروتوكول
+</a>
+</header>
+<main class="main-grid">
+<section class="lab-section">
+<h2 class="text-xl font-bold mb-3 text-gray-800">المختبر التفاعلي</h2>
+<h3 class="text-base font-semibold mb-2 text-gray-700">المواد</h3>
+<div class="tools-grid">
+<div class="tool-card" draggable="true">
+<i class="fas fa-vial text-xl text-brown-600 mb-1"></i>
+<span class="font-medium text-sm">محلول يود</span>
+<span class="text-xs text-gray-500">5 مل</span>
+<div class="tooltip">
+محلول اليود (I₂) لإنتاج اللون الأزرق مع النشا
+<div class="mt-1 text-xs text-blue-200">اسحب إلى الأنبوب</div>
+</div>
+</div>
+<div class="tool-card" draggable="true">
+<i class="fas fa-tint text-xl text-blue-600 mb-1"></i>
+<span class="font-medium text-sm">محلول نشا</span>
+<span class="text-xs text-gray-500">5 مل</span>
+<div class="tooltip">
+محلول النشا لتكوين معقد أزرق مع اليود
+</div>
+</div>
+<div class="tool-card" draggable="true">
+<i class="fas fa-flask text-xl text-green-600 mb-1"></i>
+<span class="font-medium text-sm">ثيوكبريتات الصوديوم</span>
+<span class="text-xs text-gray-500">5 مل</span>
+<div class="tooltip">
+Na₂S₂O₃ لتأخير ظهور اللون الأزرق
+</div>
+</div>
+<div class="tool-card" draggable="true">
+<i class="fas fa-water text-xl text-cyan-600 mb-1"></i>
+<span class="font-medium text-sm">ماء مقطر</span>
+<span class="text-xs text-gray-500">10 مل</span>
+<div class="tooltip">
+ماء نقي لتخفيف المحاليل
+</div>
+</div>
+</div>
+<h3 class="text-base font-semibold mb-2 text-gray-700">الأدوات</h3>
+<div class="equipment-section">
+<div class="flex flex-wrap gap-2">
+<button class="btn btn-equipment" id="select-temp-btn" disabled>
+<i class="fas fa-thermometer-half"></i>
+اختيار درجة الحرارة
+</button>
+<button class="btn btn-equipment" id="start-timer-btn" disabled>
+<i class="fas fa-clock"></i>
+بدء التوقيت
+</button>
+</div>
+</div>
+<div class="test-tube">
+<div class="tube-content" id="tube-content"></div>
+</div>
+<div class="controls">
+<div class="text-center mb-3">
+<i class="fas fa-thermometer-half text-red-600 mr-2"></i>
+<span class="font-medium text-sm" id="temp-display">درجة الحرارة: 10°C</span>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<button class="btn btn-sample" id="prepare-mixture-btn">
+<i class="fas fa-flask"></i>
+تحضير الخليط
+</button>
+<button class="btn btn-primary" id="place-tube-btn" disabled>
+<i class="fas fa-vial"></i>
+وضع الأنبوب
+</button>
+<button class="btn btn-primary" id="record-time-btn" disabled>
+<i class="fas fa-stopwatch"></i>
+تسجيل الزمن
+</button>
+<button class="btn btn-primary" id="analyze-results-btn" disabled>
+<i class="fas fa-chart-bar"></i>
+تحليل النتائج
+</button>
+</div>
+</div>
+<h3 class="text-base font-semibold mb-2 text-gray-700">جدول النتائج</h3>
+<table class="results-table">
+<thead>
+<tr>
+<th>درجة الحرارة (°C)</th>
+<th>الزمن المستغرق (ث)</th>
+</tr>
+</thead>
+<tbody id="results-body">
+<tr><td>10</td><td>-</td></tr>
+<tr><td>25</td><td>-</td></tr>
+<tr><td>40</td><td>-</td></tr>
+</tbody>
+</table>
+</section>
+<aside class="protocol-section">
+<h2 class="text-xl font-bold mb-3 text-gray-800">خطوات البروتوكول</h2>
+<div class="step-card active-step-1">
+<div class="flex items-center gap-2 mb-2">
+<div class="step-number">1</div>
+<h3 class="text-base font-semibold">تحضير الخليط</h3>
+</div>
+<p class="text-gray-600 text-sm">امزج محلول اليود، النشا، ثيوكبريتات الصوديوم، والماء المقطر.</p>
+</div>
+<div class="step-card">
+<div class="flex items-center gap-2 mb-2">
+<div class="step-number">2</div>
+<h3 class="text-base font-semibold">وضع الخليط في أنبوب</h3>
+</div>
+<p class="text-gray-600 text-sm">اسكب الخليط في أنبوب اختبار.</p>
+</div>
+<div class="step-card">
+<div class="flex items-center gap-2 mb-2">
+<div class="step-number">3</div>
+<h3 class="text-base font-semibold">وضع الأنبوب في حمام مائي</h3>
+</div>
+<p class="text-gray-600 text-sm">ضع الأنبوب في الحمام المائي.</p>
+</div>
+<div class="step-card">
+<div class="flex items-center gap-2 mb-2">
+<div class="step-number">4</div>
+<h3 class="text-base font-semibold">بدء التوقيت</h3>
+</div>
+<p class="text-gray-600 text-sm">ابدأ التوقيت فور وضع الأنبوب في الحمام.</p>
+</div>
+<div class="step-card">
+<div class="flex items-center gap-2 mb-2">
+<div class="step-number">5</div>
+<h3 class="text-base font-semibold">تسجيل ظهور اللون</h3>
+</div>
+<p class="text-gray-600 text-sm">غيّر درجة الحرارة وسجل زمن ظهور اللون الأزرق لكل درجة.</p>
+</div>
+<div class="step-card">
+<div class="flex items-center gap-2 mb-2">
+<div class="step-number">6</div>
+<h3 class="text-base font-semibold">تحليل النتائج</h3>
+</div>
+<p class="text-gray-600 text-sm">سجل الأوقات في الجدول وقارن النتائج.</p>
+</div>
+<div class="flex gap-2 flex-wrap">
+<button class="btn btn-back mt-3" id="prev-step-btn" disabled>
+<i class="fas fa-arrow-right"></i>
+الخطوة السابقة
+</button>
+<button class="btn btn-primary mt-3" id="next-step-btn" disabled>
+الخطوة التالية
+<i class="fas fa-arrow-left"></i>
+</button>
+<button class="btn btn-danger mt-3" id="end-experiment-btn">
+إنهاء التجربة
+<i class="fas fa-stop"></i>
+</button>
+</div>
+</aside>
+</main>
+<div class="notification" id="point-notification"></div>
+<div class="modal-overlay" id="score-modal">
+<div class="modal-content">
+<h2 class="text-xl font-bold">تقرير نتائج التجربة</h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+<div class="score-card">
+<div class="flex items-center gap-2 mb-2">
+<i class="fas fa-star text-xl text-red-600"></i>
+<h3 class="text-base font-semibold text-gray-700">النتيجة النهائية</h3>
+</div>
+<p class="text-2xl font-bold text-gray-800" id="final-score">0/20</p>
+<p class="font-semibold text-base" id="score-comment"></p>
+</div>
+<div class="score-card">
+<div class="flex items-center gap-2 mb-2">
+<i class="fas fa-clock text-xl text-blue-600"></i>
+<h3 class="text-base font-semibold text-gray-700">الوقت المستغرق</h3>
+</div>
+<p class="text-lg text-gray-800 font-medium" id="time-taken">0 دقيقة و 0 ثانية</p>
+</div>
+</div>
+<div class="score-card mb-4">
+<div class="flex items-center gap-2 mb-3">
+<i class="fas fa-tasks text-xl text-teal-600"></i>
+<h3 class="text-base font-semibold text-gray-700">ملخص الأداء</h3>
+</div>
+<p class="text-xs text-gray-600" id="performance-summary">لم يتم إكمال أي خطوات بشكل صحيح بعد.</p>
+</div>
+<div class="feedback-card mb-4">
+<div class="flex items-center gap-2 mb-2">
+<i class="fas fa-lightbulb text-lg text-amber-600"></i>
+<h3 class="text-base font-semibold text-amber-700">نصائح للتحسين</h3>
+</div>
+<ul class="space-y-1 text-xs text-amber-600" id="improvement-tips"></ul>
+</div>
+<div class="score-card">
+<div class="flex items-center gap-2 mb-3">
+<i class="fas fa-info-circle text-xl text-blue-600"></i>
+<h3 class="text-base font-semibold text-gray-700">معلومات تعليمية</h3>
+</div>
+<p class="text-xs text-gray-600">تُظهر التجربة أن زيادة درجة الحرارة تسرّع التفاعل الكيميائي وفقًا لقانون أرينيوس، حيث تزيد الطاقة الحركية للجزيئات، مما يؤدي إلى تصادمات أكثر فعالية.</p>
+</div>
+<div class="flex justify-center">
+<button class="btn btn-primary" id="close-modal">إغلاق التقرير</button>
+</div>
+</div>
+</div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // DOM Elements
+  const tubeContent = document.getElementById('tube-content');
+  const toolCards = document.querySelectorAll('.tool-card');
+  const nextStepButton = document.getElementById('next-step-btn');
+  const prevStepButton = document.getElementById('prev-step-btn');
+  const endExperimentButton = document.getElementById('end-experiment-btn');
+  const prepareMixtureButton = document.getElementById('prepare-mixture-btn');
+  const placeTubeButton = document.getElementById('place-tube-btn');
+  const selectTempButton = document.getElementById('select-temp-btn');
+  const startTimerButton = document.getElementById('start-timer-btn');
+  const recordTimeButton = document.getElementById('record-time-btn');
+  const analyzeResultsButton = document.getElementById('analyze-results-btn');
+  const testTube = document.querySelector('.test-tube');
+  const scoreModal = document.getElementById('score-modal');
+  const closeModalButton = document.getElementById('close-modal');
+  const pointNotification = document.getElementById('point-notification');
+  const tempDisplay = document.getElementById('temp-display');
+  const resultsBody = document.getElementById('results-body');
+
+  // Validation
+  if (!tubeContent) console.error('Element with id "tube-content" not found');
+  if (!nextStepButton) console.error('Element with id "next-step-btn" not found');
+  if (!prevStepButton) console.error('Element with id "prev-step-btn" not found');
+  if (!endExperimentButton) console.error('Element with id "end-experiment-btn" not found');
+  if (!prepareMixtureButton) console.error('Element with id "prepare-mixture-btn" not found');
+  if (!placeTubeButton) console.error('Element with id "place-tube-btn" not found');
+  if (!selectTempButton) console.error('Element with id "select-temp-btn" not found');
+  if (!startTimerButton) console.error('Element with id "start-timer-btn" not found');
+  if (!recordTimeButton) console.error('Element with id "record-time-btn" not found');
+  if (!analyzeResultsButton) console.error('Element with id "analyze-results-btn" not recommend');
+  if (!testTube) console.error('Element with class "test-tube" not found');
+  if (!scoreModal) console.error('Element with id "score-modal" not found');
+  if (!closeModalButton) console.error('Element with id "close-modal" not found');
+  if (!pointNotification) console.error('Element with id "point-notification" not found');
+  if (!tempDisplay) console.error('Element with id "temp-display" not found');
+  if (!resultsBody) console.error('Element with id "results-body" not found');
+
+  // State Variables
+  let currentStep = 1;
+  let addedTools = [];
+  let allAddedTools = [];
+  let correctTools = [];
+  let controlActions = {
+    prepare: false,
+    placeTube: false,
+    selectTemp: false,
+    startTimer: false,
+    recordTime: false,
+    analyze: false
+  };
+  let startTime = Date.now();
+  let isTiming = false;
+  let isBlueColorVisible = false;
+  let currentTemp = 10; // Start with 10°C
+  let temperaturesTested = [];
+  let results = { '10': null, '25': null, '40': null };
+  let stepHistory = [];
+  let errors = [];
+  let reactionTime = 0;
+
+  // Step Requirements
+  const stepRequirements = {
+    1: ['محلول يود', 'محلول نشا', 'ثيوكبريتات الصوديوم', 'ماء مقطر'],
+    2: [],
+    3: [],
+    4: [],
+    5: [],
+    6: []
+  };
+
+  // Timer Function
+  function formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    seconds = seconds % 60;
+    return `${minutes} دقيقة و ${seconds} ثانية`;
+  }
+
+  // Show Notification
+  function showNotification(message, isError = false) {
+    pointNotification.textContent = message;
+    pointNotification.style.background = isError ? '#ef4444' : '#10b981';
+    pointNotification.classList.add('active');
+    setTimeout(() => {
+      pointNotification.classList.remove('active');
+    }, 3000);
+  }
+
+  // Update Tool Cards
+  function updateToolCards() {
+    toolCards.forEach(card => {
+      card.classList.remove('disabled');
+      card.setAttribute('draggable', true);
+      card.addEventListener('dragstart', handleDragStart);
+    });
+    if (currentStep !== 1) {
+      toolCards.forEach(card => {
+        card.classList.add('disabled');
+        card.setAttribute('draggable', false);
+        card.removeEventListener('dragstart', handleDragStart);
+      });
+    }
+  }
+
+  // Drag and Drop Handlers
+  function handleDragStart(e) {
+    e.dataTransfer.setData('text/plain', e.target.querySelector('span').textContent);
+  }
+
+  if (testTube) {
+    testTube.addEventListener('dragover', e => {
+      e.preventDefault();
+      e.target.style.animation = 'glow 1.5s infinite';
+    });
+
+    testTube.addEventListener('drop', e => {
+      e.preventDefault();
+      e.target.style.animation = '';
+      const tool = e.dataTransfer.getData('text/plain');
+      if (!addedTools.includes(tool)) {
+        addedTools.push(tool);
+        allAddedTools.push(tool);
+        if (stepRequirements[currentStep].includes(tool) && !correctTools.includes(tool)) {
+          correctTools.push(tool);
+          showNotification(`تم إضافة ${tool} بنجاح! (+1 نقطة)`);
+        } else {
+          errors.push(`إضافة ${tool} في الخطوة ${currentStep} غير صحيحة`);
+          showNotification(`تم إضافة ${tool} لكن لا نقاط لهذه الخطوة`, true);
+        }
+        updateTube();
+        checkStepCompletion();
+      }
+    });
+  }
+
+  // Update Test Tube Appearance
+  function updateTube() {
+    if (!tubeContent) return;
+    let height = 0;
+    let color = '';
+    allAddedTools.forEach((tool, index) => {
+      switch (tool) {
+        case 'محلول يود':
+          height += 20;
+          color = index === allAddedTools.length - 1 ? 'linear-gradient(to top, #fef3c7, #fde68a)' : color;
+          break;
+        case 'محلول نشا':
+          height += 20;
+          color = index === allAddedTools.length - 1 ? 'linear-gradient(to top, #e0f2fe, #bae6fd)' : color;
+          break;
+        case 'ثيوكبريتات الصوديوم':
+          height += 20;
+          color = index === allAddedTools.length - 1 ? 'linear-gradient(to top, #d1fae5, #a7f3d0)' : color;
+          break;
+        case 'ماء مقطر':
+          height += 20;
+          color = index === allAddedTools.length - 1 ? 'linear-gradient(to top, #e0e7ff, #c7d2fe)' : color;
+          break;
+      }
+    });
+    if (isBlueColorVisible) {
+      height = 80;
+      color = 'linear-gradient(to top, #1e3a8a, #1e40af)';
+    }
+    height = Math.min(height, 80);
+    tubeContent.style.height = `${height}%`;
+    tubeContent.style.background = color || 'linear-gradient(to top, #ffffff, #e0e0e0)';
+  }
+
+  // Check Step Completion
+  function checkStepCompletion() {
+    const requiredTools = stepRequirements[currentStep];
+    const allToolsAdded = requiredTools.every(tool => correctTools.includes(tool));
+    if (currentStep === 1) {
+      if (allToolsAdded && controlActions.prepare) {
+        placeTubeButton.removeAttribute('disabled');
+        nextStepButton.removeAttribute('disabled');
+      }
+    } else if (currentStep === 2) {
+      if (controlActions.placeTube) {
+        startTimerButton.removeAttribute('disabled');
+        nextStepButton.removeAttribute('disabled');
+      }
+    } else if (currentStep === 3) {
+      if (controlActions.startTimer) {
+        nextStepButton.removeAttribute('disabled');
+      }
+    } else if (currentStep === 4) {
+      if (controlActions.startTimer) {
+        selectTempButton.removeAttribute('disabled');
+        nextStepButton.removeAttribute('disabled');
+      }
+    } else if (currentStep === 5) {
+      if (temperaturesTested.length >= 3) {
+        nextStepButton.removeAttribute('disabled');
+        analyzeResultsButton.removeAttribute('disabled');
+      }
+    } else if (currentStep === 6) {
+      if (controlActions.analyze) {
+        nextStepButton.removeAttribute('disabled');
+      }
+    }
+  }
+
+  // Calculate Score
+  function calculateScore() {
+    let score = 0;
+    const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
+    
+    // Base score: 2 points per completed step
+    score += (currentStep - 1) * 2;
+    
+    // Correct tools: 1 point per correct tool
+    score += correctTools.length;
+    
+    // Control actions
+    if (controlActions.prepare) score += 2;
+    if (controlActions.placeTube) score += 1;
+    if (controlActions.selectTemp) score += 2;
+    if (controlActions.startTimer) score += 1;
+    if (controlActions.recordTime) score += 2;
+    if (controlActions.analyze) score += 2;
+    
+    // Bonus for completing all temperatures
+    if (temperaturesTested.length === 3) score += 3;
+    
+    // Time bonus: Up to 2 points for completing in under 1 minute
+    if (elapsedSeconds < 60) {
+      score += Math.floor((60 - elapsedSeconds) / 30);
+    }
+    
+    // Penalty for errors
+    score -= Math.floor(errors.length / 2);
+    
+    return Math.max(0, Math.min(score, 20));
+  }
+
+  // Generate Performance Summary
+  function generatePerformanceSummary() {
+    const completedSteps = currentStep - 1;
+    const requiredTools = stepRequirements[currentStep];
+    const toolsComplete = requiredTools.every(tool => correctTools.includes(tool));
+    let summary = '';
+    
+    if (completedSteps === 0 && !toolsComplete) {
+      summary = 'لم يتم إكمال أي خطوات بشكل صحيح بعد.';
+    } else {
+      summary = `تم إكمال ${completedSteps} من 6 خطوات. `;
+      if (toolsComplete || requiredTools.length === 0) {
+        summary += 'جميع المواد المطلوبة في الخطوة الحالية تمت إضافتها بنجاح.';
+      } else {
+        summary += 'الخطوة الحالية لم تكتمل بالكامل.';
+      }
+      if (controlActions.prepare) summary += ' تم تحضير الخليط بنجاح.';
+      if (controlActions.placeTube) summary += ' تم وضع الأنبوب في الحمام المائي.';
+      if (controlActions.selectTemp) summary += ' تم اختيار درجة الحرارة بنجاح.';
+      if (controlActions.startTimer) summary += ' تم بدء التوقيت.';
+      if (controlActions.recordTime) summary += ' تم تسجيل زمن التفاعل.';
+      if (controlActions.analyze) summary += ' تم تحليل النتائج بنجاح.';
+      if (temperaturesTested.length > 0) {
+        summary += ` تم اختبار ${temperaturesTested.length} درجات حرارة.`;
+      }
+    }
+    if (errors.length > 0) {
+      summary += ` لاحظت ${errors.length} أخطاء، مثل إضافة مواد في الخطوة الخاطئة.`;
+    }
+    return summary;
+  }
+
+  // Generate Improvement Tips
+  function generateImprovementTips() {
+    const tips = [
+      'اتبع تسلسل الخطوات بدقة لتجنب الأخطاء.',
+      'اقرأ التعليمات بعناية قبل تنفيذ كل خطوة.',
+      'تأكد من إضافة المواد في الخطوة الصحيحة.',
+      'اختر درجات الحرارة بدقة لضمان نتائج صحيحة.',
+      'سجل الأوقات بعد ظهور اللون الأزرق.'
+    ];
+    if (errors.length > 0) {
+      tips.push('تجنب إضافة مواد غير مطلوبة في الخطوة الحالية.');
+    }
+    if (temperaturesTested.length < 3) {
+      tips.push('أكمل اختبار جميع درجات الحرارة (10°C، 25°C، 40°C).');
+    }
+    return tips;
+  }
+
+  // Generate Score Comment
+  function generateScoreComment(score) {
+    if (score >= 16) return { text: 'ممتاز! لقد أتقنت التجربة.', color: 'text-green-600' };
+    if (score >= 12) return { text: 'جيد جدًا، لكن يمكن تحسين التسلسل.', color: 'text-blue-600' };
+    if (score >= 8) return { text: 'مقبول، ركز على الخطوات بدقة أكبر.', color: 'text-yellow-600' };
+    return { text: 'يحتاج إلى تحسين، راجع التعليمات.', color: 'text-red-600' };
+  }
+
+  // Show Score Modal
+  function showScoreModal() {
+    const score = calculateScore();
+    const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
+    const scoreComment = generateScoreComment(score);
+    
+    document.getElementById('final-score').textContent = `${score}/20`;
+    document.getElementById('score-comment').textContent = scoreComment.text;
+    document.getElementById('score-comment').className = `font-semibold text-base ${scoreComment.color}`;
+    document.getElementById('time-taken').textContent = formatTime(elapsedSeconds);
+    document.getElementById('performance-summary').textContent = generatePerformanceSummary();
+    
+    const tipsList = document.getElementById('improvement-tips');
+    tipsList.innerHTML = '';
+    generateImprovementTips().forEach(tip => {
+      const li = document.createElement('li');
+      li.className = 'flex items-start gap-2';
+      li.innerHTML = `<span class="font-semibold mt-0.5">•</span>${tip}`;
+      tipsList.appendChild(li);
+    });
+    
+    scoreModal.classList.add('active');
+  }
+
+  // End Experiment
+  if (endExperimentButton) {
+    endExperimentButton.addEventListener('click', () => {
+      showScoreModal();
+      disableInteractions();
+    });
+  }
+
+  // Disable Interactions
+  function disableInteractions() {
+    toolCards.forEach(card => {
+      card.classList.add('disabled');
+      card.setAttribute('draggable', false);
+      card.removeEventListener('dragstart', handleDragStart);
+    });
+    [prepareMixtureButton, placeTubeButton, selectTempButton, startTimerButton, recordTimeButton, analyzeResultsButton, nextStepButton, prevStepButton, endExperimentButton].forEach(btn => {
+      if (btn) btn.setAttribute('disabled', true);
+    });
+    if (testTube) {
+      testTube.removeEventListener('dragover', e => e.preventDefault());
+      testTube.removeEventListener('drop', e => {});
+    }
+  }
+
+  // Close Modal
+  if (closeModalButton) {
+    closeModalButton.addEventListener('click', () => {
+      scoreModal.classList.remove('active');
+    });
+  }
+
+  // Prepare Mixture
+  if (prepareMixtureButton) {
+    prepareMixtureButton.addEventListener('click', () => {
+      if (currentStep === 1 && !controlActions.prepare) {
+        controlActions.prepare = true;
+        showNotification('تم تحضير الخليط بنجاح! (+2 نقطة)');
+        prepareMixtureButton.setAttribute('disabled', true);
+        checkStepCompletion();
+      }
+    });
+  }
+
+  // Place Tube
+  if (placeTubeButton) {
+    placeTubeButton.addEventListener('click', () => {
+      if (currentStep === 2 && !controlActions.placeTube) {
+        controlActions.placeTube = true;
+        showNotification('تم وضع الأنبوب بنجاح! (+1 نقطة)');
+        placeTubeButton.setAttribute('disabled', true);
+        checkStepCompletion();
+      }
+    });
+  }
+
+  // Select Temperature
+  if (selectTempButton) {
+    selectTempButton.addEventListener('click', () => {
+      if (currentStep === 5 && !controlActions.selectTemp) {
+        const temps = [10, 25, 40];
+        const untriedTemps = temps.filter(temp => !temperaturesTested.includes(temp));
+        if (untriedTemps.length > 0) {
+          currentTemp = untriedTemps[0];
+          tempDisplay.textContent = `درجة الحرارة: ${currentTemp}°C`;
+          controlActions.selectTemp = true;
+          showNotification(`تم اختيار درجة حرارة ${currentTemp}°C! (+2 نقطة)`);
+          startTimerButton.removeAttribute('disabled');
+        } else {
+          showNotification('تم اختبار جميع درجات الحرارة!', true);
+        }
+      }
+    });
+  }
+
+  // Start Timer
+  let timerInterval;
+  if (startTimerButton) {
+    startTimerButton.addEventListener('click', () => {
+      if ((currentStep === 3 || currentStep === 5) && !isTiming) {
+        isTiming = true;
+        isBlueColorVisible = false;
+        controlActions.startTimer = true;
+        showNotification('تم بدء التوقيت! (+1 نقطة)');
+        startTimerButton.setAttribute('disabled', true);
+        recordTimeButton.setAttribute('disabled', true);
+        reactionTime = 0;
+        updateTube(); // Reset tube color
+        timerInterval = setInterval(() => {
+          reactionTime += 0.1;
+          if (reactionTime >= (currentTemp === 10 ? 6 : currentTemp === 25 ? 4 : 2)) {
+            clearInterval(timerInterval);
+            isTiming = false;
+            isBlueColorVisible = true;
+            tubeContent.style.background = 'linear-gradient(to top, #1e3a8a, #1e40af)';
+            tubeContent.style.height = '80%';
+            showNotification('ظهر اللون الأزرق الداكن!');
+            recordTimeButton.removeAttribute('disabled');
+            checkStepCompletion();
+          }
+        }, 100);
+      }
+    });
+  }
+
+  // Record Time
+  if (recordTimeButton) {
+    recordTimeButton.addEventListener('click', () => {
+      if (currentStep === 5 && controlActions.startTimer && !isTiming && isBlueColorVisible) {
+        controlActions.recordTime = true;
+        results[currentTemp] = reactionTime.toFixed(1);
+        if (!temperaturesTested.includes(currentTemp)) {
+          temperaturesTested.push(currentTemp);
+        }
+        showNotification(`تم تسجيل زمن ${reactionTime.toFixed(1)} ثانية عند ${currentTemp}°C! (+2 نقطة)`);
+        updateResultsTable();
+        controlActions.selectTemp = false;
+        controlActions.startTimer = false;
+        controlActions.recordTime = false;
+        isBlueColorVisible = false;
+        updateTube();
+        if (temperaturesTested.length < 3) {
+          selectTempButton.removeAttribute('disabled');
+          showNotification(`اختر درجة حرارة جديدة للتجربة التالية`);
+        } else {
+          recordTimeButton.setAttribute('disabled', true);
+          checkStepCompletion();
+        }
+      } else {
+        showNotification('يجب انتظار ظهور اللون الأزرق قبل تسجيل الزمن!', true);
+      }
+    });
+  }
+
+  // Update Results Table
+  function updateResultsTable() {
+    resultsBody.innerHTML = '';
+    [10, 25, 40].forEach(temp => {
+      const row = document.createElement('tr');
+      row.innerHTML = `<td>${temp}</td><td>${results[temp] ? results[temp] + ' ث' : '-'}</td>`;
+      resultsBody.appendChild(row);
+    });
+  }
+
+  // Analyze Results
+  if (analyzeResultsButton) {
+    analyzeResultsButton.addEventListener('click', () => {
+      if (currentStep === 6 && temperaturesTested.length >= 3) {
+        controlActions.analyze = true;
+        showNotification('تم تحليل النتائج بنجاح! (+2 نقطة)');
+        showNotification('تُظهر النتائج أن سرعة التفاعل تزداد مع ارتفاع درجة الحرارة.');
+        checkStepCompletion();
+      }
+    });
+  }
+
+  // Next Step
+  if (nextStepButton) {
+    nextStepButton.addEventListener('click', () => {
+      const requiredTools = stepRequirements[currentStep];
+      const allToolsAdded = requiredTools.every(tool => correctTools.includes(tool));
+      let canProceed = false;
+      
+      if (currentStep === 1 && allToolsAdded && controlActions.prepare) {
+        canProceed = true;
+      } else if (currentStep === 2 && controlActions.placeTube) {
+        canProceed = true;
+      } else if (currentStep === 3 && controlActions.startTimer) {
+        canProceed = true;
+      } else if (currentStep === 4 && controlActions.startTimer) {
+        canProceed = true;
+      } else if (currentStep === 5 && temperaturesTested.length >= 3) {
+        canProceed = true;
+      } else if (currentStep === 6 && controlActions.analyze) {
+        canProceed = true;
+      }
+      
+      if (canProceed && currentStep < 6) {
+        stepHistory.push({
+          step: currentStep,
+          addedTools: [...addedTools],
+          correctTools: [...correctTools],
+          controlActions: { ...controlActions },
+          temperaturesTested: [...temperaturesTested],
+          results: { ...results }
+        });
+        currentStep++;
+        prevStepButton.removeAttribute('disabled');
+        updateStepUI();
+      } else if (canProceed && currentStep === 6) {
+        showScoreModal();
+        disableInteractions();
+      } else {
+        showNotification('يرجى إكمال جميع الإجراءات والمواد المطلوبة لهذه الخطوة!', true);
+      }
+    });
+  }
+
+  // Previous Step
+  if (prevStepButton) {
+    prevStepButton.addEventListener('click', () => {
+      if (currentStep > 1 && stepHistory.length > 0) {
+        const prevState = stepHistory.pop();
+        currentStep = prevState.step;
+        addedTools = prevState.addedTools;
+        correctTools = prevState.correctTools;
+        controlActions = prevState.controlActions;
+        temperaturesTested = prevState.temperaturesTested;
+        results = prevState.results;
+        isBlueColorVisible = false;
+        reactionTime = 0;
+        updateResultsTable();
+        updateStepUI();
+        if (stepHistory.length === 0) {
+          prevStepButton.setAttribute('disabled', true);
+        }
+      }
+    });
+  }
+
+  // Update Step UI
+  function updateStepUI() {
+    if (allAddedTools.length > 0 || isBlueColorVisible) {
+      updateTube();
+    } else if (tubeContent) {
+      tubeContent.style.height = '0%';
+      tubeContent.style.background = '';
+    }
+    document.querySelectorAll('.step-card').forEach((card, index) => {
+      card.classList.remove('active-step-1', 'active-step-2', 'active-step-3', 'active-step-4');
+      if (index + 1 === currentStep) {
+        card.classList.add(`active-step-${currentStep > 4 ? 4 : currentStep}`);
+      }
+    });
+    [prepareMixtureButton, placeTubeButton, selectTempButton, startTimerButton, recordTimeButton, analyzeResultsButton].forEach(btn => {
+      if (btn) btn.setAttribute('disabled', true);
+    });
+    if (currentStep === 1) {
+      if (!controlActions.prepare) prepareMixtureButton.removeAttribute('disabled');
+    } else if (currentStep === 2) {
+      if (!controlActions.placeTube) placeTubeButton.removeAttribute('disabled');
+    } else if (currentStep === 3) {
+      if (!controlActions.startTimer) startTimerButton.removeAttribute('disabled');
+    } else if (currentStep === 4) {
+      if (!controlActions.selectTemp) selectTempButton.removeAttribute('disabled');
+    } else if (currentStep === 5) {
+      if (!controlActions.selectTemp) selectTempButton.removeAttribute('disabled');
+      if (!isTiming && isBlueColorVisible) recordTimeButton.removeAttribute('disabled');
+    } else if (currentStep === 6) {
+      if (temperaturesTested.length >= 3) analyzeResultsButton.removeAttribute('disabled');
+    }
+    const requiredTools = stepRequirements[currentStep];
+    if ((requiredTools.every(tool => correctTools.includes(tool)) || requiredTools.length === 0)) {
+      checkStepCompletion();
+    } else {
+      nextStepButton.setAttribute('disabled', true);
+    }
+    tempDisplay.textContent = `درجة الحرارة: ${currentTemp}°C`;
+    updateToolCards();
+  }
+
+  // Initialize
+  updateToolCards();
+});
+</script>
+</body>
+</html>

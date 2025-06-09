@@ -1,0 +1,206 @@
+{% include "header.html" %}
+<div class="section-spacing">
+  <div class="relative isolate px-6 py-24 sm:py-32 lg:px-8" sectionname="pricing" id="pricing"
+    sectioncomponent="Pricing" sectionlabel="Pricing" sortorder="0" section-component="Pricing" site-name="LabTech"
+    site-id="ZP42im4qEzTr89J2BDtA"
+    site-logo-url="https://storage.googleapis.com/mixo-files/logos/1742648060376-labTech-q256.svg"
+    site-url="https://www.mixo.io/site/lab-tech-8zcnj" site-logo-size="md" header-visible="true"
+    regenerating-content="false">
+    <div class="absolute inset-x-0 -top-3 -z-10 transform-gpu overflow-hidden px-36 opacity-80" aria-hidden="true"><svg
+        class="-mr-3 top-8 right-1/2 lg:m-0 lg:left-0" width="404" height="392" fill="none" viewBox="0 0 404 392">
+        <defs>
+          <pattern id="837c3e70-6c3a-44e6-8854-cc48c737b659" x="0" y="0" width="20" height="20"
+            patternUnits="userSpaceOnUse">
+            <rect x="0" y="0" width="4" height="4" class="text-gray-200 dark:text-slate-800" fill="currentColor"></rect>
+          </pattern>
+        </defs>
+        <rect width="404" height="392" fill="url(#837c3e70-6c3a-44e6-8854-cc48c737b659)"></rect>
+      </svg></div>
+    <div class="mx-auto max-w-2xl text-center lg:max-w-4xl">
+      <h1 class="text-base font-semibold font-serif leading-7 text-primary">خطط التسعير</h1>
+      <p class="mt-2 text-3xl font-bold font-sans tracking-tight text-gray-900 dark:text-white sm:text-4xl">اختر
+        خطتك وابدأ باستكشاف التجارب العلمية الافتراضية</p>
+    </div>
+
+    <div
+      class="prose prose-user font-serif mx-auto mt-6 max-w-2xl text-center text-lg leading-8 text-gray-600 dark:text-slate-300">
+      <p dir="rtl">اختر خطتك وانطلق في عالم التجارب العلمية الافتراضية مع NovaLab.</p>
+    </div>
+    <div class="md:max-w-6xl md:grid-cols-3 isolate mx-auto mt-10 grid max-w-md grid-cols-1 gap-8 md:mx-auto" dir="rtl">
+      <div
+        class="ring-1 ring-gray-200 dark:ring-slate-800 rounded-3xl p-8 xl:p-10 bg-white dark:bg-gradient-to-br dark:from-slate-900 dark:to-slate-950">
+        <div class="flex items-center justify-between gap-x-4">
+          <h3 id="0" class="text-gray-900 dark:text-white text-lg font-semibold leading-8 font-sans">طالب</h3>
+        </div>
+        <div class="prose prose-user font-serif mt-4 text-sm leading-6 text-gray-600 dark:text-white">
+          <p>تُناسب الطلبة </p>
+        </div>
+        <p class="mt-6 flex items-baseline gap-x-1"><span
+            class="text-4xl font-sans tracking-tight text-slate-900 dark:text-white flex items-center"><span
+              class="font-semibold">2000 دج</span></span><span
+            class="text-sm font-semibold font-serif leading-6 text-slate-600 dark:text-slate-300 dark:font-normal"><span>/</span>شـــهــر</span>
+        </p>
+
+        {% if subscription == "طالب": %}
+        <a to=""
+          class="ui-button ui-button ui-button-base ui-button-primary hover:scale-[102%] transition-transform mt-8 sm:mt-10 mt-8 sm:mt-10"
+          href="#" data-plan-button="0">
+          انت مشترك بالفعل
+        </a>
+        {% else: %}
+        <a to=""
+          class="ui-button ui-button ui-button-base ui-button-primary hover:scale-[102%] transition-transform mt-8 sm:mt-10 mt-8 sm:mt-10"
+          href="{{ url_for('process_payment', subscription='طالب') }}" data-plan-button="0">
+          <!--v-if--><!--v-if-->ابدأ
+          الآن
+        </a>
+        {% endif %}
+
+        <ul role="list" class="mt-8 space-y-3 text-sm leading-6 text-gray-600 dark:text-white xl:mt-10">
+          <li class="flex items-center gap-x-3"><svg width="1.2em" height="1.2em" preserveAspectRatio="xMidYMid meet"
+              viewBox="0 0 20 20" class="h-6 w-5 flex-none text-primary" aria-hidden="true">
+              <path fill="currentColor" fill-rule="evenodd"
+                d="M16.707 5.293a1 1 0 0 1 0 1.414l-8 8a1 1 0 0 1-1.414 0l-4-4a1 1 0 0 1 1.414-1.414L8 12.586l7.293-7.293a1 1 0 0 1 1.414 0"
+                clip-rule="evenodd"></path>
+            </svg><span class="prose prose-user dark:prose-invert font-serif"><span>الوصول إلى التجارب
+                الافتراضية الأساسية</span></span></li>
+          <li class="flex items-center gap-x-3"><svg width="1.2em" height="1.2em" preserveAspectRatio="xMidYMid meet"
+              viewBox="0 0 20 20" class="h-6 w-5 flex-none text-primary" aria-hidden="true">
+              <path fill="currentColor" fill-rule="evenodd"
+                d="M16.707 5.293a1 1 0 0 1 0 1.414l-8 8a1 1 0 0 1-1.414 0l-4-4a1 1 0 0 1 1.414-1.414L8 12.586l7.293-7.293a1 1 0 0 1 1.414 0"
+                clip-rule="evenodd"></path>
+            </svg><span class="prose prose-user dark:prose-invert font-serif"><span>إمكانية التفاعل مع الأساتذة
+                أثناء التجارب</span></span></li>
+          <li class="flex items-center gap-x-3"><svg width="1.2em" height="1.2em" preserveAspectRatio="xMidYMid meet"
+              viewBox="0 0 20 20" class="h-6 w-5 flex-none text-primary" aria-hidden="true">
+              <path fill="currentColor" fill-rule="evenodd"
+                d="M16.707 5.293a1 1 0 0 1 0 1.414l-8 8a1 1 0 0 1-1.414 0l-4-4a1 1 0 0 1 1.414-1.414L8 12.586l7.293-7.293a1 1 0 0 1 1.414 0"
+                clip-rule="evenodd"></path>
+            </svg><span class="prose prose-user dark:prose-invert font-serif"><span>دعم محدود عبر البريد
+                الإلكتروني</span></span></li>
+          <li class="flex items-center gap-x-3"><svg width="1.2em" height="1.2em" preserveAspectRatio="xMidYMid meet"
+              viewBox="0 0 20 20" class="h-6 w-5 flex-none text-primary" aria-hidden="true">
+              <path fill="currentColor" fill-rule="evenodd"
+                d="M16.707 5.293a1 1 0 0 1 0 1.414l-8 8a1 1 0 0 1-1.414 0l-4-4a1 1 0 0 1 1.414-1.414L8 12.586l7.293-7.293a1 1 0 0 1 1.414 0"
+                clip-rule="evenodd"></path>
+            </svg><span class="prose prose-user dark:prose-invert font-serif"><span>مثالية للطلاب الذين يرغبون
+                في استكشاف العلوم عمليًا</span></span></li>
+        </ul>
+      </div>
+      <div
+        class="ring-2 ring-primary rounded-3xl p-8 xl:p-10 bg-white dark:bg-gradient-to-br dark:from-slate-900 dark:to-slate-950">
+        <div class="flex items-center justify-between gap-x-4">
+          <h3 id="1" class="text-primary text-lg font-semibold leading-8 font-sans">مؤسسة</h3>
+          <p class="rounded-full bg-primary/10 px-2.5 py-1 text-xs font-semibold font-sans leading-5 text-primary">
+            المقترحة</p>
+        </div>
+        <div class="prose prose-user font-serif mt-4 text-sm leading-6 text-gray-600 dark:text-white">
+          <p>مناسبة للمدراس والجامعات</p>
+        </div>
+        <p class="mt-6 flex items-baseline gap-x-1"><span
+            class="text-4xl font-sans tracking-tight text-slate-900 dark:text-white flex items-center"><span
+              class="font-semibold">4000 دج</span></span><span
+            class="text-sm font-semibold font-serif leading-6 text-slate-600 dark:text-slate-300 dark:font-normal"><span>/</span>شـــهــر</span>
+        </p>
+        {% if subscription == "مؤسسة": %}
+        <a to=""
+          class="ui-button ui-button ui-button-base ui-button-primary hover:scale-[102%] transition-transform mt-8 sm:mt-10 mt-8 sm:mt-10"
+          href="#" data-plan-button="1">
+          انت مشترك بالفعل
+        </a>
+        {% else: %}
+        <a to=""
+          class="ui-button ui-button ui-button-base ui-button-primary hover:scale-[102%] transition-transform mt-8 sm:mt-10 mt-8 sm:mt-10"
+          href="{{ url_for('process_payment', subscription='مؤسسة') }}" data-plan-button="1"><!--v-if--><!--v-if-->ابدأ
+          الآن
+        </a>
+        {% endif %}
+        <ul role="list" class="mt-8 space-y-3 text-sm leading-6 text-gray-600 dark:text-white xl:mt-10">
+          <li class="flex items-center gap-x-3"><svg width="1.2em" height="1.2em" preserveAspectRatio="xMidYMid meet"
+              viewBox="0 0 20 20" class="h-6 w-5 flex-none text-primary" aria-hidden="true">
+              <path fill="currentColor" fill-rule="evenodd"
+                d="M16.707 5.293a1 1 0 0 1 0 1.414l-8 8a1 1 0 0 1-1.414 0l-4-4a1 1 0 0 1 1.414-1.414L8 12.586l7.293-7.293a1 1 0 0 1 1.414 0"
+                clip-rule="evenodd"></path>
+            </svg><span class="prose prose-user dark:prose-invert font-serif"><span>اشتراك شامل لجميع الطلاب
+                والأساتذة داخل المؤسسة</span></span></li>
+          <li class="flex items-center gap-x-3"><svg width="1.2em" height="1.2em" preserveAspectRatio="xMidYMid meet"
+              viewBox="0 0 20 20" class="h-6 w-5 flex-none text-primary" aria-hidden="true">
+              <path fill="currentColor" fill-rule="evenodd"
+                d="M16.707 5.293a1 1 0 0 1 0 1.414l-8 8a1 1 0 0 1-1.414 0l-4-4a1 1 0 0 1 1.414-1.414L8 12.586l7.293-7.293a1 1 0 0 1 1.414 0"
+                clip-rule="evenodd"></path>
+            </svg><span class="prose prose-user dark:prose-invert font-serif"><span>تخصيص التجارب العلمية بما
+                يتناسب مع المناهج الدراسي</span></span></li>
+          <li class="flex items-center gap-x-3"><svg width="1.2em" height="1.2em" preserveAspectRatio="xMidYMid meet"
+              viewBox="0 0 20 20" class="h-6 w-5 flex-none text-primary" aria-hidden="true">
+              <path fill="currentColor" fill-rule="evenodd"
+                d="M16.707 5.293a1 1 0 0 1 0 1.414l-8 8a1 1 0 0 1-1.414 0l-4-4a1 1 0 0 1 1.414-1.414L8 12.586l7.293-7.293a1 1 0 0 1 1.414 0"
+                clip-rule="evenodd"></path>
+            </svg><span class="prose prose-user dark:prose-invert font-serif"><span>مثالية للمدارس والجامعات
+                الراغبة في توفير بيئة تعليمية متطورة</span></span></li>
+          <li class="flex items-center gap-x-3"><span class="prose prose-user dark:prose-invert font-serif"></span></li>
+        </ul>
+      </div>
+      <div
+        class="ring-1 ring-gray-200 dark:ring-slate-800 rounded-3xl p-8 xl:p-10 bg-white dark:bg-gradient-to-br dark:from-slate-900 dark:to-slate-950">
+        <div class="flex items-center justify-between gap-x-4">
+          <h3 id="2" class="text-gray-900 dark:text-white text-lg font-semibold leading-8 font-sans">استاذ</h3>
+        </div>
+        <div class="prose prose-user font-serif mt-4 text-sm leading-6 text-gray-600 dark:text-white">
+          <p>تُناسب الاساتذة</p>
+        </div>
+        <p class="mt-6 flex items-baseline gap-x-1"><span
+            class="text-4xl font-sans tracking-tight text-slate-900 dark:text-white flex items-center"><span
+              class="font-semibold">2500 دج</span></span><span
+            class="text-sm font-semibold font-serif leading-6 text-slate-600 dark:text-slate-300 dark:font-normal"><span>/</span>شـــهــر
+          </span>
+        </p>
+        {% if subscription == "أستاذ": %}
+        <a to=""
+          class="ui-button ui-button ui-button-base ui-button-primary hover:scale-[102%] transition-transform mt-8 sm:mt-10 mt-8 sm:mt-10"
+          href="#" data-plan-button="1">
+          انت مشترك بالفعل
+        </a>
+        {% else: %}
+        <a to=""
+          class="ui-button ui-button ui-button-base ui-button-primary hover:scale-[102%] transition-transform mt-8 sm:mt-10 mt-8 sm:mt-10"
+          href="{{ url_for('process_payment', subscription='أستاذ') }}" data-plan-button="1"><!--v-if--><!--v-if-->ابدأ
+          الآن
+        </a>
+        {% endif %}
+        <ul role="list" class="mt-8 space-y-3 text-sm leading-6 text-gray-600 dark:text-white xl:mt-10">
+          <li class="flex items-center gap-x-3"><svg width="1.2em" height="1.2em" preserveAspectRatio="xMidYMid meet"
+              viewBox="0 0 20 20" class="h-6 w-5 flex-none text-primary" aria-hidden="true">
+              <path fill="currentColor" fill-rule="evenodd"
+                d="M16.707 5.293a1 1 0 0 1 0 1.414l-8 8a1 1 0 0 1-1.414 0l-4-4a1 1 0 0 1 1.414-1.414L8 12.586l7.293-7.293a1 1 0 0 1 1.414 0"
+                clip-rule="evenodd"></path>
+            </svg><span class="prose prose-user dark:prose-invert font-serif"><span>وصول غير محدود لجميع التجارب
+                الافتراضية</span></span></li>
+          <li class="flex items-center gap-x-3"><svg width="1.2em" height="1.2em" preserveAspectRatio="xMidYMid meet"
+              viewBox="0 0 20 20" class="h-6 w-5 flex-none text-primary" aria-hidden="true">
+              <path fill="currentColor" fill-rule="evenodd"
+                d="M16.707 5.293a1 1 0 0 1 0 1.414l-8 8a1 1 0 0 1-1.414 0l-4-4a1 1 0 0 1 1.414-1.414L8 12.586l7.293-7.293a1 1 0 0 1 1.414 0"
+                clip-rule="evenodd"></path>
+            </svg><span class="prose prose-user dark:prose-invert font-serif"><span>أدوات متقدمة لتقييم أداء
+                الطلاب</span></span></li>
+          <li class="flex items-center gap-x-3"><svg width="1.2em" height="1.2em" preserveAspectRatio="xMidYMid meet"
+              viewBox="0 0 20 20" class="h-6 w-5 flex-none text-primary" aria-hidden="true">
+              <path fill="currentColor" fill-rule="evenodd"
+                d="M16.707 5.293a1 1 0 0 1 0 1.414l-8 8a1 1 0 0 1-1.414 0l-4-4a1 1 0 0 1 1.414-1.414L8 12.586l7.293-7.293a1 1 0 0 1 1.414 0"
+                clip-rule="evenodd"></path>
+            </svg><span class="prose prose-user dark:prose-invert font-serif"><span>إمكانية إنشاء وإدارة الفصول
+                الافتراضية</span></span></li>
+          <li class="flex items-center gap-x-3"><svg width="1.2em" height="1.2em" preserveAspectRatio="xMidYMid meet"
+              viewBox="0 0 20 20" class="h-6 w-5 flex-none text-primary" aria-hidden="true">
+              <path fill="currentColor" fill-rule="evenodd"
+                d="M16.707 5.293a1 1 0 0 1 0 1.414l-8 8a1 1 0 0 1-1.414 0l-4-4a1 1 0 0 1 1.414-1.414L8 12.586l7.293-7.293a1 1 0 0 1 1.414 0"
+                clip-rule="evenodd"></path>
+            </svg><span class="prose prose-user dark:prose-invert font-serif"><span>مناسبة للأساتذة الذين يرغبون
+                في تحسين تجربة تدريس العلوم</span></span></li>
+        </ul>
+      </div>
+    </div>
+    <div
+      class="absolute -z-20 inset-y-0 top-80 w-screen left-1/2 bg-gray-50 opacity-50 dark:opacity-30 dark:bg-gradient-to-br dark:from-slate-800 dark:to-slate-950 rounded-l-3xl lg:left-80 lg:right-0 lg:w-full">
+    </div>
+  </div>
+  {% include "footer.html" %}

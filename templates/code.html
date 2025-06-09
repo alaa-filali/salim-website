@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Editor </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --dark-color: #1a1a2e;
+            --light-color: #f8f9fa;
+            --success-color: #4cc9f0;
+            --warning-color: #f72585;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+        
+        header span {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-left: 1rem;
+        }
+        
+        .editor-container {
+            display: flex;
+            flex: 1;
+            padding: 1rem;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .editor-section {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .editor-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+        
+        .editor-header {
+            background: linear-gradient(135deg, var(--dark-color), #16213e);
+            color: white;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .editor-header h3 {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        
+        .editor-header i {
+            font-size: 1rem;
+        }
+        
+        textarea {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            resize: none;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            background: #f8f9fa;
+            color: #333;
+            transition: background 0.3s ease;
+            tab-size: 2;
+        }
+        
+        textarea:focus {
+            outline: none;
+            background: white;
+        }
+        
+        .output-section {
+            flex: 2;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+        
+        .output-header {
+            background: linear-gradient(135deg, #4cc9f0, #4895ef);
+            color: white;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .output-header h3 {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        
+        .output-header button {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .output-header button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        iframe {
+            flex: 1;
+            border: none;
+            background: white;
+        }
+        
+        /* تأثيرات للوحة المفاتيح */
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(67, 97, 238, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(67, 97, 238, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(67, 97, 238, 0); }
+        }
+        
+        .typing-effect {
+            animation: pulse 1.5s infinite;
+        }
+        
+        /* تصميم متجاوب */
+        @media (max-width: 768px) {
+            .editor-container {
+                flex-direction: column;
+            }
+            
+            .editor-section, .output-section {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <i class="fas fa-code fa-lg"></i>
+        <span> Code Editor</span>
+    </header>
+    
+    <div class="editor-container">
+        <div class="editor-section">
+            <div class="editor-header">
+                <h3><i class="fab fa-html5"></i> HTML</h3>
+                <i class="fas fa-code"></i>
+            </div>
+            <textarea id="html" placeholder="Write your HTML code here..."></textarea>
+        </div>
+        
+        <div class="editor-section">
+            <div class="editor-header">
+                <h3><i class="fab fa-css3-alt"></i> CSS</h3>
+                <i class="fas fa-paint-brush"></i>
+            </div>
+            <textarea id="css" placeholder="Write your CSS code here..."></textarea>
+        </div>
+        
+        <div class="editor-section">
+            <div class="editor-header">
+                <h3><i class="fab fa-js"></i> JavaScript</h3>
+                <i class="fas fa-bolt"></i>
+            </div>
+            <textarea id="js" placeholder="Write your JavaScript code here..."></textarea>
+        </div>
+        
+        <div class="output-section">
+            <div class="output-header">
+                <h3><i class="fas fa-play-circle"></i> Output</h3>
+                <button id="refresh-btn"><i class="fas fa-sync-alt"></i> Refresh</button>
+            </div>
+            <iframe id="out" frameborder="0"></iframe>
+        </div>
+    </div>
+
+    <script>
+        // دالة تشغيل الكود
+        function run() {
+            const htmlC = document.getElementById("html").value;
+            const CssC = "<style>" + document.getElementById('css').value + "</style>";
+            const jsC = document.getElementById("js").value;
+            const out = document.getElementById("out");
+            
+            // إضافة تأثير أثناء الكتابة
+            document.querySelectorAll('textarea').forEach(t => {
+                t.classList.add('typing-effect');
+                setTimeout(() => t.classList.remove('typing-effect'), 1500);
+            });
+            
+            try {
+                out.contentDocument.body.innerHTML = htmlC + CssC;
+                out.contentWindow.eval(jsC);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        
+        // دالة إكمال الوسوم التلقائي
+        function setupAutocomplete(textarea) {
+            textarea.addEventListener('keydown', function(e) {
+                // إكمال الوسوم عند الضغط على مفتاح '>'
+                if (e.key === '>') {
+                    const startPos = this.selectionStart;
+                    const endPos = this.selectionEnd;
+                    const text = this.value;
+                    const prevChar = text.substring(startPos - 1, startPos);
+                    
+                    // إذا كان الحرف السابق ليس مسافة (مثل <h1)
+                    if (prevChar !== ' ' && prevChar !== '>' && prevChar !== '/') {
+                        const tagStart = text.lastIndexOf('<', startPos - 1);
+                        if (tagStart !== -1) {
+                            const tagContent = text.substring(tagStart + 1, startPos - 1);
+                            const tagNameMatch = tagContent.match(/^([^\s>]+)/);
+                            if (tagNameMatch) {
+                                const tagName = tagNameMatch[1];
+                                const closingTag = `</${tagName}>`;
+                                
+                                // إدراج وسم الإغلاق
+                                this.value = text.substring(0, startPos) + '>' + 
+                                            text.substring(endPos) + closingTag;
+                                
+                                // وضع المؤشر بين الوسمين
+                                this.selectionStart = startPos + 1;
+                                this.selectionEnd = startPos + 1;
+                                
+                                e.preventDefault();
+                                run();
+                            }
+                        }
+                    }
+                }
+                
+                // إكمال الوسوم عند الضغط على مفتاح Tab
+                if (e.key === 'Tab') {
+                    const startPos = this.selectionStart;
+                    const endPos = this.selectionEnd;
+                    const text = this.value;
+                    
+                    // إذا كان هناك نص محدد
+                    if (startPos !== endPos) {
+                        const selectedText = text.substring(startPos, endPos);
+                        
+                        // إضافة وسوم div حول النص المحدد
+                        this.value = text.substring(0, startPos) + 
+                                     '<div>' + selectedText + '</div>' + 
+                                     text.substring(endPos);
+                        
+                        // تحديد النص الأصلي بعد الإضافة
+                        this.selectionStart = startPos + 5;
+                        this.selectionEnd = endPos + 5;
+                        
+                        e.preventDefault();
+                        run();
+                    } else {
+                        // إدراج مسافة بدلاً من الانتقال إلى الحقل التالي
+                        this.value = text.substring(0, startPos) + '  ' + text.substring(endPos);
+                        this.selectionStart = startPos + 2;
+                        this.selectionEnd = startPos + 2;
+                        e.preventDefault();
+                    }
+                }
+            });
+        }
+        
+        // أحداث الكتابة
+        document.getElementById("html").addEventListener("keyup", run);
+        document.getElementById("css").addEventListener("keyup", run);
+        document.getElementById("js").addEventListener("keyup", run);
+        
+        // زر التحديث
+        document.getElementById("refresh-btn").addEventListener("click", run);
+        
+        // إعداد الإكمال التلقائي لحقل HTML
+        setupAutocomplete(document.getElementById("html"));
+    </script>
+</body>
+</html>
