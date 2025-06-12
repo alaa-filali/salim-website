@@ -90,12 +90,24 @@
               <div class="absolute inset-x-0 top-0 z-10" text-color="auto">
                 <div class="px-6 py-6 md:px-8 relative z-10">
                   <nav class="flex items-center justify-between gap-x-4 md:gap-x-6" aria-label="Global">
-                    <!-- Logo & Site Name --><a href="{{url_for('index')}}"
+<!--                     Logo & Site Name -->
+<!--                     <a href="{{url_for('index')}}"
                       class="flex items-center gap-x-2 shrink-0"><img class="w-auto h-8"
                         src="{{ url_for('static', filename='index_files//1742648060376-labTech-q256.svg') }}" alt="NovaLab logo">
                       <p class="font-sans font-bold text-xl md:text-2xl !leading-none text-type-900 dark:text-white">
                         NovaLab</p>
-                    </a><!-- Nav Items -->
+                    </a> -->
+                    <a href="{{ url_for('index') }}" class="flex items-center gap-x-2 shrink-0">
+                      <div
+                        class="flex items-center text-xl md:text-2xl font-sans font-bold text-type-900 dark:text-white leading-none">
+                        <span>Nova</span>
+                        <img class="w-auto h-8 inline-block"
+                          src="{{ url_for('static', filename='index_files//1742648060376-labTech-q256.svg') }}"
+                          alt="NovaLab logo">
+                        <span>ab</span>
+                      </div>
+                    </a>
+                    <!-- Nav Items -->
                     <div class="shrink-0 gap-x-4 md:gap-x-8 flex mx-auto">
                       {% if not current_user.is_authenticated: %}
                       <a href="{{ url_for('login') }}"
